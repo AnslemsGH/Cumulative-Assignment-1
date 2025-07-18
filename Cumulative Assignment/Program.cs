@@ -1,7 +1,14 @@
+using Cumulative_Assignment.Controllers;
+using Cumulative_Assignment.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<SchoolDbContext>();
+
+builder.Services.AddScoped<TeacherAPIController>();
 
 var app = builder.Build();
 

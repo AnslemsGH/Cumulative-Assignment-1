@@ -21,11 +21,11 @@ namespace Cumulative_Assignment.Controllers
         //    _context = context;
         //}
 
-        [HttpGet(template:"ListTeacherInfo")]
+        [HttpGet(template: "ListTeacherInfo")]
 
         public List<Teacher> ListTeacherInfo()
-        {
-            List <Teacher> TeacherInfo = new List<Teacher>();
+        {    //creating a list of teachers
+            List<Teacher> TeacherInfo = new List<Teacher>();
 
             using (MySqlConnection Connection = _context.AccessDatabase())
             {
@@ -58,7 +58,7 @@ namespace Cumulative_Assignment.Controllers
                         Teacherinfo.Salary = Decimal.Parse(ResultSet["salary"].ToString());
                         Teacherinfo.HireDate = DateTime.Parse(ResultSet["hiredate"].ToString());
                         Teacherinfo.EmployeeNumber = ResultSet["employeenumber"].ToString();
-                        
+
                         TeacherInfo.Add(Teacherinfo);
 
                     }
@@ -71,9 +71,9 @@ namespace Cumulative_Assignment.Controllers
 
         [HttpGet(template: "ATeacherInfo/{teachersid}")]
 
-        public ActionResult<List<Teacher>> ATeacherInfo(int teachersid)
+        public Teacher ATeacherInfo(int teachersid)
         {
-            List<Teacher> TeacherInfo = new List<Teacher>();
+            Teacher TeacherInfo = new Teacher();
 
             using (MySqlConnection Connection = _context.AccessDatabase())
             {
@@ -87,26 +87,26 @@ namespace Cumulative_Assignment.Controllers
 
                 using (MySqlDataReader ResultSet = Command.ExecuteReader())
                 {
-                    if(ResultSet.Read())
-                    {                      
-                        Teacher Teacherinfo = new Teacher();
-                        Teacherinfo.TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
-                        Teacherinfo.TeacherFName = ResultSet["teacherfname"].ToString();
-                        Teacherinfo.TeacherLName = ResultSet["teacherlname"].ToString();
-                        Teacherinfo.Salary = Decimal.Parse(ResultSet["salary"].ToString());
-                        Teacherinfo.HireDate = DateTime.Parse(ResultSet["hiredate"].ToString());
-                        Teacherinfo.EmployeeNumber = ResultSet["employeenumber"].ToString();
-
-                        TeacherInfo.Add(Teacherinfo);
-                        return TeacherInfo;
-
-                    }
-                    else
+                    if (ResultSet.Read())
                     {
-                        string message = "TeacherId input is incorrect as no teacher available is linked to the id";
-                        return NotFound(message);
+                        //Teacher Teacherinfo = new Teacher();
+                        TeacherInfo.TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
+                        TeacherInfo.TeacherFName = ResultSet["teacherfname"].ToString();
+                        TeacherInfo.TeacherLName = ResultSet["teacherlname"].ToString();
+                        TeacherInfo.Salary = Decimal.Parse(ResultSet["salary"].ToString());
+                        TeacherInfo.HireDate = DateTime.Parse(ResultSet["hiredate"].ToString());
+                        TeacherInfo.EmployeeNumber = ResultSet["employeenumber"].ToString();
+
                     }
+                    //I am getting error saying cant convert string and I am unable to understand why.
+                //    else
+                //    {
+                //        string message = "TeacherId input is incorrect as no teacher available is linked to the id.";
+                //        return message;
+                //    }
                 }
+
+                return TeacherInfo;
             }
 
         }
