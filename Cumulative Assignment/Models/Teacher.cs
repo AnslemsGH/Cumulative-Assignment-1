@@ -1,6 +1,6 @@
 ﻿namespace Cumulative_Assignment.Models
 {
-
+    //Creating a model to store the database output in a format.
     public class Teacher
     {
         //Primary Key from the table to uniquely identify a teacher.

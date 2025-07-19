@@ -73,6 +73,7 @@ namespace Cumulative_Assignment.Controllers
                 //Executing the command
                 using (MySqlDataReader ResultSet = Command.ExecuteReader())
                 {
+                    //Using while loop to run through each row of the table and store the output in the list.
                     while (ResultSet.Read())
                     {
                         ///Tried this earlier based on the recording, it gives an output but not in a structured format.
@@ -96,6 +97,7 @@ namespace Cumulative_Assignment.Controllers
                         Teacherinfo.HireDate = DateTime.Parse(ResultSet["hiredate"].ToString());
                         Teacherinfo.EmployeeNumber = ResultSet["employeenumber"].ToString();
 
+                        //Adding the individual teacher details into the array/list created above.
                         TeacherInfo.Add(Teacherinfo);
 
                     }
@@ -128,7 +130,7 @@ namespace Cumulative_Assignment.Controllers
 
         public Teacher ATeacherInfo(int teachersid)
         {
-            //Created a variable to store the output from query.
+            //Created a variable to store the output from query in a required format.
             Teacher TeacherInfo = new Teacher();
 
             using (MySqlConnection Connection = _context.AccessDatabase())
@@ -166,6 +168,7 @@ namespace Cumulative_Assignment.Controllers
                 //    }
                 }
 
+                //returning the output.
                 return TeacherInfo;
             }
 
