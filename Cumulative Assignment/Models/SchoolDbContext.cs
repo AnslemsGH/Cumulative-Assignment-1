@@ -2,6 +2,7 @@
 
 namespace Cumulative_Assignment.Models
 {
+    //Configuring the Database School needed for the API and web application.
     public class SchoolDbContext
     {
         private static string User {  get { return "root";  } }
