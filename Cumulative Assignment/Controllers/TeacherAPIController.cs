@@ -53,7 +53,7 @@ namespace Cumulative_Assignment.Controllers
 
         [HttpGet(template: "ListTeacherInfo")]
 
-        public List<Teacher> ListTeacherInfo()
+        public List<Teacher> ListTeacherInfo(string? SearchKey)
         {    //creating a list to store info of ALL teachers
             List<Teacher> TeacherInfo = new List<Teacher>();
 
@@ -63,12 +63,14 @@ namespace Cumulative_Assignment.Controllers
                 Connection.Open();
 
                 //Query to be run on the database.
-                string query = "select * from teachers";
+                string query = "select * from teachers where teacherfname like @key or teacherlname like @key";
 
                 //Creating a command
                 MySqlCommand Command = Connection.CreateCommand(); ;
 
                 Command.CommandText = query;
+                Command.Parameters.AddWithValue("@key", "%"+SearchKey+"%");
+                Command.Prepare();
 
                 //Executing the command
                 using (MySqlDataReader ResultSet = Command.ExecuteReader())
@@ -139,12 +141,13 @@ namespace Cumulative_Assignment.Controllers
                 Connection.Open();
 
                 //Query that return all the fields for a particular teacher whose id is considered as an input parameter.
-                string query = $"select * from teachers where teacherid = {teachersid}";
+                string query = "select * from teachers where teacherid = @id";
 
                 //Creating a command.
                 MySqlCommand Command = Connection.CreateCommand(); ;
 
                 Command.CommandText = query;
+                Command.Parameters.AddWithValue("@id",teachersid);
 
                 //Executing the command
                 using (MySqlDataReader ResultSet = Command.ExecuteReader())

@@ -15,12 +15,12 @@ namespace Cumulative_Assignment.Controllers
             _api = api;
         }
 
-        //Creating output for all teachers as a list in link format fetched from API
+        //Creating output with search parameter for all teachers as a list and individual entry matching the optional seach input key in link format fetched from API
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List(string SearchKey)
         {
             //Storing the output from the API in a Variable
-            List<Teacher> Teachers = _api.ListTeacherInfo();
+            List<Teacher> Teachers = _api.ListTeacherInfo(SearchKey);
 
             //Outputting the variable in the view i.e. html
             return View(Teachers);
