@@ -218,6 +218,21 @@ namespace Cumulative_Assignment.Controllers
             return TeacherId;
         }
 
+
+        /// <summary>
+        /// This code deletes the teacher if matching the id received from the database
+        /// </summary>
+        /// <param name="id">The primary Key of TeacherID</param>
+        /// <returns>The number of rows affected by delete</returns>
+        /// <example>
+        /// POST api/TeacherAPI/DeleteTeacher/11 -> 1
+        /// </example>
+        [HttpPost(template:"DeleteTeacher/{id}")]
+        public string DeleteTeacher(int id)
+        {
+            return $"I want to delete the article with id {id}";
+        }
+
     }
 
 }

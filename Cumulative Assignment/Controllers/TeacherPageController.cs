@@ -70,5 +70,25 @@ namespace Cumulative_Assignment.Controllers
             //Redirecting to the teachers page that was just added.
             return RedirectToAction("Show", new {id = TeacherId});
         }
+
+        //GET: /TeacherPage/DeleteConfirm/{id} -> A webpage that asks a user if they want to delete this article
+        [HttpGet]
+        public IActionResult DeleteConfirm(int id)
+        {
+            Teacher SelectedTeacher = _api.ATeacherInfo(id);
+            
+            return View(SelectedTeacher);
+        }
+
+        //POST: /TeacherPage/Delete/{id} -> Deletes the article and returns to the List.cshtml
+
+        [HttpPost]
+
+        public IActionResult Delete(int id)
+        {
+            _api.DeleteTeacher(id);
+            
+            return RedirectToAction("List");
+        }
     }
 }
