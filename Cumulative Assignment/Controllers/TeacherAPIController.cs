@@ -225,12 +225,27 @@ namespace Cumulative_Assignment.Controllers
         /// <param name="id">The primary Key of TeacherID</param>
         /// <returns>The number of rows affected by delete</returns>
         /// <example>
-        /// POST api/TeacherAPI/DeleteTeacher/11 -> 1
+        /// DELETE api/TeacherAPI/DeleteTeacher/11 -> 1
         /// </example>
-        [HttpPost(template:"DeleteTeacher/{id}")]
-        public string DeleteTeacher(int id)
+        [HttpDelete(template:"DeleteTeacher/{id}")]
+        public int DeleteTeacher(int id)
         {
-            return $"I want to delete the article with id {id}";
+            string query = "delete from teachers where teacherid=@id";
+            int RowsAffected = 0;
+
+            using (MySqlConnection Conn = _context.AccessDatabase())
+            {
+                Conn.Open();
+
+                MySqlCommand Command = Conn.CreateCommand();
+                Command.CommandText = query;
+                Command.Parameters.AddWithValue("@id", id);
+
+                RowsAffected = Command.ExecuteNonQuery();
+                
+            }
+
+            return RowsAffected;
         }
 
     }
