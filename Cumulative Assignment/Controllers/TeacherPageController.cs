@@ -86,7 +86,7 @@ namespace Cumulative_Assignment.Controllers
 
         public IActionResult Delete(int id)
         {
-            //_api.DeleteTeacher(id);
+            _api.DeleteTeacher(id);
             
             return RedirectToAction("List");
         }
