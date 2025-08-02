@@ -41,5 +41,34 @@ namespace Cumulative_Assignment.Controllers
             //Outputting the variable in the view i.e. html
             return View(ATeacher);
         }
+
+
+        //GET : TeacherPage/New -> A webpage that asks user for the new teacher info
+        [HttpGet]
+
+        public IActionResult New()
+        {
+            return View();
+        }
+
+
+        //POST: TeacherPage/Create -> Storing the values received into the DB.
+        [HttpPost]
+
+        public IActionResult Create(string TeacherFName, string TeacherLName, string EmployeeNumber, DateTime HireDate, Decimal Salary)
+        {
+            Teacher NewTeacher = new Teacher();
+            NewTeacher.TeacherFName = TeacherFName;
+            NewTeacher.TeacherLName = TeacherLName;
+            NewTeacher.EmployeeNumber = EmployeeNumber;
+            NewTeacher.HireDate = HireDate;
+            NewTeacher.Salary = Salary;
+
+            int TeacherId = _api.AddTeacher(NewTeacher);
+
+
+            //Redirecting to the teachers page that was just added.
+            return RedirectToAction("Show", new {id = TeacherId});
+        }
     }
 }

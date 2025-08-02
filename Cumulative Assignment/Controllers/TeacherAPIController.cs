@@ -1,4 +1,5 @@
-﻿using Cumulative_Assignment.Models;
+﻿using System.Collections.Generic;
+using Cumulative_Assignment.Models;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +25,13 @@ namespace Cumulative_Assignment.Controllers
         //}
 
         /// <summary>
-        /// Below API request will fetch the list of all teachers from the database School and return in a json format as stored in the list variable called TeacherInfo.
+        /// Below API request will fetch the list of all teachers from the database School and return in a json format as stored in the list variable called TeacherInfo. It also has an optional search feature which allows user to filter the output.
         /// </summary>
         /// <returns>
-        /// It will return all the records from the Teachers table in school DB along with their corresponding column name individually in an array/list.
+        /// It will return all the records from the Teachers table in school DB along with their corresponding column name individually in an array/list unless searched in which case it will return only the output that matches the criteria.
         /// </returns>
         /// <example>
-        /// api/teacher/ListTeacherInfo > [{
+        /// GET: api/teacher/ListTeacherInfo > [{
         /// [{
           //  "teacherId": 1,
           //  "teacherFName": "Alexander",
@@ -177,6 +178,45 @@ namespace Cumulative_Assignment.Controllers
 
         }
 
+        /// <summary>
+        /// Adding a new teacher into the database.
+        /// </summary>
+        /// <param name="NewTeacher">New teacher is a set of data that will be input into the database, that user will be inputting on the UI</param>
+        /// <returns>This code return the new teacher id that was created based on the input in the database</returns>
+        /// <example>
+        /// POST: https://localhost:7059/TeacherPage/New
+        /// First Name: Anslem
+        /// Last Name: Coelho
+        /// Employee Number: A1234
+        /// Hire Date: 08-01-2025
+        /// Salary: 75
+        /// </example>
+
+        [HttpPost(template:"AddTeacher")]
+        
+        public int AddTeacher([FromBody]Teacher NewTeacher)
+        {
+            string query = "insert into teachers (teacherfname, teacherlname, employeenumber,hiredate,salary) values (@fname, @lname, @num, @hiredate, @sal);";
+
+            int TeacherId = -1;
+            using (MySqlConnection Conn = _context.AccessDatabase())
+            {
+                Conn.Open();
+
+                MySqlCommand Command = Conn.CreateCommand();
+                Command.CommandText = query;
+                Command.Parameters.AddWithValue("@fname", NewTeacher.TeacherFName);
+                Command.Parameters.AddWithValue("@lname", NewTeacher.TeacherLName);
+                Command.Parameters.AddWithValue("@num", NewTeacher.EmployeeNumber);
+                Command.Parameters.AddWithValue("@hiredate", NewTeacher.HireDate);
+                Command.Parameters.AddWithValue("@sal", NewTeacher.Salary);
+
+                Command.ExecuteNonQuery();
+                TeacherId = Convert.ToInt32(Command.LastInsertedId);
+            }
+
+            return TeacherId;
+        }
 
     }
 
