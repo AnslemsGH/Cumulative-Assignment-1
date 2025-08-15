@@ -249,16 +249,24 @@ namespace Cumulative_Assignment.Controllers
             return RowsAffected;
         }
 
-
-        ///<summary>
-        ///Receives teacher information and updates the corresponding teacher
-        ///</summary>
-        ///<param name = "id" > The primary key of the teacher to be updated</param>
-        /// <returns> The teacher object after update</returns>
+        /// <summary>
+        /// Updates the information of an existing teacher.
+        /// </summary>
+        /// <param name="id">The ID of the teacher to update.</param>
+        /// <param name="UpdatedTeacher">The updated teacher object containing new values.</param>
+        /// <returns>The updated teacher object after the update.</returns>
         /// <example>
-        /// PUT: api/TeacherAPI/UpdateTeacher/5 -> 
+        /// PUT: api/TeacherAPI/UpdateTeacher/15
+        /// Body (JSON):
+        /// {
+        ///     "TeacherId": 5,
+        ///     "TeacherFName": "Anslem",
+        ///     "TeacherLName": "Coelho",
+        ///     "EmployeeNumber": "E123",
+        ///     "HireDate": "2023-01-01T00:00:00",
+        ///     "Salary": 50000
+        /// }
         /// </example>
-      
 
         [HttpPut(template: "UpdateTeacher/{id}")]
         public Teacher UpdateTeacher(int id, [FromBody] Teacher UpdatedTeacher)
