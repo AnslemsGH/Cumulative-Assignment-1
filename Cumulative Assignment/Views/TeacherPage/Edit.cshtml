@@ -1,0 +1,28 @@
+﻿@model Cumulative_Assignment.Models.Teacher
+
+<h1>Editing a teacher</h1>
+<form method="POST" action="/TeacherPage/Update/@Model.TeacherId">
+	<div>
+		<label for="TeacherFName">First Name:</label>
+		<input id="TeacherFName" type="text" name="TeacherFName" value="@Model.TeacherFName"/>
+	</div>
+	<div>
+		<label for="TeacherLName">Last Name:</label>
+		<input id="TeacherLName" type="text" name="TeacherLName" value="@Model.TeacherLName"/>
+	</div>
+	<div>
+		<label for="EmployeeNumber">Employee Number:</label>
+		<input id="EmployeeNumber" type="text" name="EmployeeNumber" value="@Model.EmployeeNumber"/>
+	</div>
+	<div>
+		<label for="HireDate">Hire Date:</label>
+		<input id="HireDate" type="datetime" name="HireDate" value="@Model.HireDate"/>
+	</div>
+	<div>
+		<label for="Salary">Salary:</label>
+		<input id="Salary" type="number" name="Salary" value="@Model.Salary"/>
+	</div>
+	<div>
+		<input type="submit" value="Edit Teacher" />
+	</div>
+</form>

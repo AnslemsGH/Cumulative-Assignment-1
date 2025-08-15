@@ -27,27 +27,28 @@ namespace Cumulative_Assignment.Controllers
         /// <summary>
         /// Below API request will fetch the list of all teachers from the database School and return in a json format as stored in the list variable called TeacherInfo. It also has an optional search feature which allows user to filter the output.
         /// </summary>
+        /// <Request> Content-Type: application/json</Request>
         /// <returns>
         /// It will return all the records from the Teachers table in school DB along with their corresponding column name individually in an array/list unless searched in which case it will return only the output that matches the criteria.
         /// </returns>
         /// <example>
         /// GET: api/teacher/ListTeacherInfo > [{
         /// [{
-          //  "teacherId": 1,
-          //  "teacherFName": "Alexander",
-          //  "teacherLName": "Bennett",
-          //  "employeeNumber": "T378",
-          //  "hireDate": "2016-08-05T00:00:00",
-          //  "salary": 55.3
-          //},
-          //{
-          //  "teacherId": 2,
-          //  "teacherFName": "Caitlin",
-          //  "teacherLName": "Cummings",
-          //  "employeeNumber": "T381",
-          //  "hireDate": "2014-06-10T00:00:00",
-          //  "salary": 62.77
-          //}]
+        //  "teacherId": 1,
+        //  "teacherFName": "Alexander",
+        //  "teacherLName": "Bennett",
+        //  "employeeNumber": "T378",
+        //  "hireDate": "2016-08-05T00:00:00",
+        //  "salary": 55.3
+        //},
+        //{
+        //  "teacherId": 2,
+        //  "teacherFName": "Caitlin",
+        //  "teacherLName": "Cummings",
+        //  "employeeNumber": "T381",
+        //  "hireDate": "2014-06-10T00:00:00",
+        //  "salary": 62.77
+        //}]
         /// </example>
 
 
@@ -70,7 +71,7 @@ namespace Cumulative_Assignment.Controllers
                 MySqlCommand Command = Connection.CreateCommand(); ;
 
                 Command.CommandText = query;
-                Command.Parameters.AddWithValue("@key", "%"+SearchKey+"%");
+                Command.Parameters.AddWithValue("@key", "%" + SearchKey + "%");
                 Command.Prepare();
 
                 //Executing the command
@@ -148,7 +149,7 @@ namespace Cumulative_Assignment.Controllers
                 MySqlCommand Command = Connection.CreateCommand(); ;
 
                 Command.CommandText = query;
-                Command.Parameters.AddWithValue("@id",teachersid);
+                Command.Parameters.AddWithValue("@id", teachersid);
 
                 //Executing the command
                 using (MySqlDataReader ResultSet = Command.ExecuteReader())
@@ -164,12 +165,12 @@ namespace Cumulative_Assignment.Controllers
                         TeacherInfo.EmployeeNumber = ResultSet["employeenumber"].ToString();
 
                     }
-                ///Commented because I am getting error saying cannot convert string because of which I cant run my code and I am unable to understand why.
-                //    else
-                //    {
-                //        string message = "TeacherId input is incorrect as no teacher available is linked to the id.";
-                //        return message;
-                //    }
+                    ///Commented because I am getting error saying cannot convert string because of which I cant run my code and I am unable to understand why.
+                    //    else
+                    //    {
+                    //        string message = "TeacherId input is incorrect as no teacher available is linked to the id.";
+                    //        return message;
+                    //    }
                 }
 
                 //returning the output.
@@ -192,9 +193,9 @@ namespace Cumulative_Assignment.Controllers
         /// Salary: 75
         /// </example>
 
-        [HttpPost(template:"AddTeacher")]
-        
-        public int AddTeacher([FromBody]Teacher NewTeacher)
+        [HttpPost(template: "AddTeacher")]
+
+        public int AddTeacher([FromBody] Teacher NewTeacher)
         {
             string query = "insert into teachers (teacherfname, teacherlname, employeenumber,hiredate,salary) values (@fname, @lname, @num, @hiredate, @sal);";
 
@@ -227,7 +228,7 @@ namespace Cumulative_Assignment.Controllers
         /// <example>
         /// DELETE api/TeacherAPI/DeleteTeacher/11 -> 1
         /// </example>
-        [HttpDelete(template:"DeleteTeacher/{id}")]
+        [HttpDelete(template: "DeleteTeacher/{id}")]
         public int DeleteTeacher(int id)
         {
             string query = "delete from teachers where teacherid=@id";
@@ -242,12 +243,47 @@ namespace Cumulative_Assignment.Controllers
                 Command.Parameters.AddWithValue("@id", id);
 
                 RowsAffected = Command.ExecuteNonQuery();
-                
+
             }
 
             return RowsAffected;
         }
 
-    }
 
+        ///<summary>
+        ///Receives teacher information and updates the corresponding teacher
+        ///</summary>
+        ///<param name = "id" > The primary key of the teacher to be updated</param>
+        /// <returns> The teacher object after update</returns>
+        /// <example>
+        /// PUT: api/TeacherAPI/UpdateTeacher/5 -> 
+        /// </example>
+      
+
+        [HttpPut(template: "UpdateTeacher/{id}")]
+        public Teacher UpdateTeacher(int id, [FromBody] Teacher UpdatedTeacher)
+
+        {
+            
+            using (MySqlConnection Conn = _context.AccessDatabase())
+            {
+                Conn.Open();
+                string query = "update teachers set teacherfname=@fname, teacherlname=@lname, employeenumber=@num, hiredate=@hiredate, salary=@sal where teacherid=@id";
+                MySqlCommand Command = Conn.CreateCommand();
+                Command.CommandText = query;
+                Command.Parameters.AddWithValue("@fname", UpdatedTeacher.TeacherFName);
+                Command.Parameters.AddWithValue("@lname", UpdatedTeacher.TeacherLName);
+                Command.Parameters.AddWithValue("@num", UpdatedTeacher.EmployeeNumber);
+                Command.Parameters.AddWithValue("@hiredate", UpdatedTeacher.HireDate);
+                Command.Parameters.AddWithValue("@sal", UpdatedTeacher.Salary);
+                Command.Parameters.AddWithValue("@id", id);
+                Command.ExecuteNonQuery();
+            }
+
+            return ATeacherInfo(id);
+
+
+        }
+
+    }
 }

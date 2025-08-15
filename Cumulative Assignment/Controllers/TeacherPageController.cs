@@ -90,5 +90,36 @@ namespace Cumulative_Assignment.Controllers
             
             return RedirectToAction("List");
         }
+
+        //GET: /TeacherPage/Edit/{id} -> A webpage that asks user to edit the teacher info
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Teacher SelectedTeacher = _api.ATeacherInfo(id);
+            return View(SelectedTeacher);
+        }
+
+        //POST: /TeacherPage/Update/{id} -> Updates the teacher info in the DB
+        //Form Data:
+        //Headers: Content-Type: application/x-www-form-urlencoded
+        // TeacherFName={TeacherFName}&TeacherLName={TeacherLName}&EmployeeNumber={EmployeeNumber}&HireDate={HireDate}&Salary={Salary}
+        [HttpPost]
+        public IActionResult Update(int id, string TeacherFName, string TeacherLName, string EmployeeNumber, DateTime HireDate, Decimal Salary)
+        {
+            Teacher UpdatedTeacher = new Teacher();
+
+            UpdatedTeacher.TeacherFName = TeacherFName;
+            UpdatedTeacher.TeacherLName = TeacherLName;
+            UpdatedTeacher.EmployeeNumber = EmployeeNumber;
+            UpdatedTeacher.HireDate = HireDate;
+            UpdatedTeacher.Salary = Salary;
+
+            _api.UpdateTeacher(id, UpdatedTeacher);
+            
+            //Redirecting to the teachers page that was just updated.
+            return RedirectToAction("Show", new { id = id });
+        }
+
+
     }
 }
