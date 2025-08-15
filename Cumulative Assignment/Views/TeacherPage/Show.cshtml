@@ -1,5 +1,30 @@
 ﻿@model Cumulative_Assignment.Models.Teacher
 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    a {
+        display: inline-block;
+        margin-right: 10px;
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+</style>
+
 <h2>@Model.TeacherFName @Model.TeacherLName</h2>
 <a href="/TeacherPage/DeleteConfirm/@Model.TeacherId">Delete</a>
 <a href="/TeacherPage/Edit/@Model.TeacherId">Edit</a>
